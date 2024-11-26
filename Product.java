@@ -1,19 +1,30 @@
 public class Product implements Formula {
-    private Formula left;
-    private Formula right;
+    private Formula[] factors; // Tableau contenant les facteurs
 
-    public Product(Formula left, Formula right) {
-        this.left = left;
-        this.right = right;
+    // Constructeur acceptant plusieurs formules
+    public Product(Formula... factors) {
+        this.factors = factors;
     }
 
     @Override
     public String asString() {
-        return "(" + left.asString() + "*" + right.asString() + ")";
+        StringBuilder result = new StringBuilder("(");
+        for (int i = 0; i < factors.length; i++) {
+            result.append(factors[i].asString());
+            if (i < factors.length - 1) { // Ajoute "*" entre les facteurs
+                result.append("*");
+            }
+        }
+        result.append(")");
+        return result.toString();
     }
 
     @Override
     public double asValue() {
-        return left.asValue() * right.asValue();
+        double product = 1;
+        for (Formula factor : factors) {
+            product *= factor.asValue(); // Multiplie la valeur de chaque facteur
+        }
+        return product;
     }
 }
