@@ -1,30 +1,22 @@
-public class Sum implements Formula {
-    private Formula[] terms; // Tableau contenant les formules
-
-    // Constructeur acceptant plusieurs formules
+public class Sum extends VariadicOperator {
+    
+    // Constructeur
     public Sum(Formula... terms) {
-        this.terms = terms;
+        super(terms);
     }
 
     @Override
-    public String asString() {
-        StringBuilder result = new StringBuilder("(");
-        for (int i = 0; i < terms.length; i++) {
-            result.append(terms[i].asString());
-            if (i < terms.length - 1) { // Ajoute "+" entre les termes
-                result.append("+");
-            }
-        }
-        result.append(")");
-        return result.toString();
+    protected String symbol() {
+        return "+"; // Le symbole pour Sum est "+"
     }
 
     @Override
-    public double asValue() {
-        double sum = 0;
-        for (Formula term : terms) {
-            sum += term.asValue(); // Ajoute la valeur de chaque terme
-        }
-        return sum;
+    protected double initialValue() {
+        return 0; // La valeur initiale pour la somme est 0
+    }
+
+    @Override
+    protected double cumulativeValue(double accumulator, double value) {
+        return accumulator + value; // Additionner les valeurs
     }
 }
